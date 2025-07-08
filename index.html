@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cosmic Discord Messenger</title>
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px #fff;
+    }
+
+    input, textarea {
+      width: 300px;
+      margin: 10px;
+      padding: 10px;
+      border: 2px solid #0ff;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+    }
+
+    .button {
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #0ff;
+      transition: 0.2s ease;
+    }
+
+    #send {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: white;
+    }
+
+    #kudos {
+      background: linear-gradient(45deg, #ff0080, #ff8c00);
+      color: white;
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Send to Discord</h1>
+  <input type="text" id="name" placeholder="Your Name (or Anonymous)" />
+  <textarea id="message" rows="5" placeholder="Type your message here..."></textarea><br />
+  <button class="button" id="kudos" onclick="sendMessage('Send Kudos 💖')">Send Kudos</button>
+  <button class="button" id="send" onclick="sendMessage()">Send to Discord</button>
+
+  <script>
+    function sendMessage(kudosMsg) {
+      const name = document.getElementById("name").value.trim() || "Anonymous";
+      const msgBox = document.getElementById("message");
+      const message = kudosMsg || msgBox.value.trim();
+
+      if (!message) {
+        alert("Please enter a message!");
+        return;
+      }
+
+      fetch("https://discord.com/api/webhooks/1383726435717611600/xv_dEYDWZdzBqtUsSGgAo836j4u30P0qre-dfL1OHfGArdSjfSAigB_8Um_wOWhIurBz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          content: message
+        })
+      }).then(() => {
+        alert("Sent! ✨");
+        msgBox.value = "";
+      }).catch(err => {
+        alert("Oops! Something went wrong.");
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>
